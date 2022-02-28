@@ -41,8 +41,8 @@ class KeysCommand extends Command
             return $this->error('Encryption keys already exist. Use the --force option to overwrite them.');
         }
 
-        file_put_contents($publicKey, array_get($keys, 'publickey'));
-        file_put_contents($privateKey, array_get($keys, 'privatekey'));
+        file_put_contents($publicKey, \Arr::get($keys, 'publickey'));
+        file_put_contents($privateKey, \Arr::get($keys, 'privatekey'));
 
         $this->info('Encryption keys generated successfully.');
     }
