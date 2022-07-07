@@ -74,4 +74,8 @@ class ClientRepository implements ClientRepositoryInterface
                 return true;
         }
     }
+
+    public function validateClient($clientIdentifier, $clientSecret, $grantType) {
+        // needed for php 8
+    }
 }
