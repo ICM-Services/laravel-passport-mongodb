@@ -6,7 +6,7 @@ use Exception;
 use Throwable;
 use Illuminate\Http\Response;
 use Illuminate\Container\Container;
-use Zend\Diactoros\Response as Psr7Response;
+use Laminas\Diactoros\Response as Psr7Response;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
@@ -50,7 +50,7 @@ trait HandlesOAuthErrors
             throw new OAuthServerException(
                 $e,
                 $this->convertResponse($e->generateHttpResponse(new Psr7Response)),
-                new Response($e->getMessage(), 500)
+                $e->getMessage()
             );
         }
     }

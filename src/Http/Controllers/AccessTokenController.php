@@ -5,7 +5,7 @@ namespace MoeenBasra\LaravelPassportMongoDB\Http\Controllers;
 use MoeenBasra\LaravelPassportMongoDB\TokenRepository;
 use Lcobucci\JWT\Parser as JwtParser;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response as Psr7Response;
+use Laminas\Diactoros\Response as Psr7Response;
 use League\OAuth2\Server\AuthorizationServer;
 
 class AccessTokenController
