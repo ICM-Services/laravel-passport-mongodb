@@ -21,24 +21,37 @@ trait HandlesOAuthErrors
      * @param  \Closure  $callback
      * @return \Illuminate\Http\Response
      */
+    // protected function withErrorHandling($callback)
+    // {
+    //     try {
+    //         return $callback();
+    //     } catch (OAuthServerException $e) {
+    //         $this->exceptionHandler()->report($e);
+
+    //         return $this->convertResponse(
+    //             $e->generateHttpResponse(new Psr7Response)
+    //         );
+    //     } catch (Exception $e) {
+    //         $this->exceptionHandler()->report($e);
+
+    //         return new Response($e->getMessage(), 500);
+    //     } catch (Throwable $e) {
+    //         $this->exceptionHandler()->report(new FatalThrowableError($e));
+
+    //         return new Response($e->getMessage(), 500);
+    //     }
+    // }
+
     protected function withErrorHandling($callback)
     {
         try {
             return $callback();
-        } catch (OAuthServerException $e) {
-            $this->exceptionHandler()->report($e);
-
-            return $this->convertResponse(
-                $e->generateHttpResponse(new Psr7Response)
+        } catch (LeagueException $e) {
+            throw new OAuthServerException(
+                $e,
+                $this->convertResponse($e->generateHttpResponse(new Psr7Response)),
+                new Response($e->getMessage(), 500)
             );
-        } catch (Exception $e) {
-            $this->exceptionHandler()->report($e);
-
-            return new Response($e->getMessage(), 500);
-        } catch (Throwable $e) {
-            $this->exceptionHandler()->report(new FatalThrowableError($e));
-
-            return new Response($e->getMessage(), 500);
         }
     }
 
