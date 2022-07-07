@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use MoeenBasra\LaravelPassportMongoDB\Guards\TokenGuard;
+use Lcobucci\JWT\Encoding\JoseEncoder;
+use Lcobucci\JWT\Parser as JWTParser;
+use Lcobucci\JWT\Token\Parser as JWTTokenParser;
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\ResourceServer;
 use League\OAuth2\Server\AuthorizationServer;
@@ -83,6 +86,8 @@ class PassportServiceProvider extends ServiceProvider
         $this->registerResourceServer();
 
         $this->registerGuard();
+
+        $this->registerJWTParser();
     }
 
     /**
@@ -219,6 +224,20 @@ class PassportServiceProvider extends ServiceProvider
                 $this->makeCryptKey('oauth-public.key')
             );
         });
+    }
+
+    /**
+     * Register the JWT Parser.
+     *
+     * @return void
+     */
+    protected function registerJWTParser()
+    {
+        if (class_exists(JWTTokenParser::class)) {
+            $this->app->singleton(JWTParser::class, function () {
+                return new JWTTokenParser(new JoseEncoder());
+            });
+        }
     }
 
     /**
