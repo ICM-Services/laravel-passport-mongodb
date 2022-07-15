@@ -9,7 +9,7 @@ use MoeenBasra\LaravelPassportMongoDB\TokenRepository;
 use MoeenBasra\LaravelPassportMongoDB\ClientRepository;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response as Psr7Response;
+use Laminas\Diactoros\Response as Psr7Response;
 use League\OAuth2\Server\AuthorizationServer;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;

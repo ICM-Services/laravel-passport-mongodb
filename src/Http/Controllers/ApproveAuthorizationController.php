@@ -3,7 +3,7 @@
 namespace MoeenBasra\LaravelPassportMongoDB\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Zend\Diactoros\Response as Psr7Response;
+use Laminas\Diactoros\Response as Psr7Response;
 use League\OAuth2\Server\AuthorizationServer;
 
 class ApproveAuthorizationController

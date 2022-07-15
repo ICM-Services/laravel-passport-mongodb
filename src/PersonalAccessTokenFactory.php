@@ -2,8 +2,8 @@
 
 namespace MoeenBasra\LaravelPassportMongoDB;
 
-use Zend\Diactoros\Response;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\ServerRequest;
 use Lcobucci\JWT\Parser as JwtParser;
 use League\OAuth2\Server\AuthorizationServer;
 
@@ -89,7 +89,7 @@ class PersonalAccessTokenFactory
      * @param  \MoeenBasra\LaravelPassportMongoDB\Client  $client
      * @param  mixed  $userId
      * @param  array  $scopes
-     * @return \Zend\Diactoros\ServerRequest
+     * @return \Laminas\Diactoros\ServerRequest
      */
     protected function createRequest($client, $userId, array $scopes)
     {
@@ -105,7 +105,7 @@ class PersonalAccessTokenFactory
     /**
      * Dispatch the given request to the authorization server.
      *
-     * @param  \Zend\Diactoros\ServerRequest  $request
+     * @param  \Laminas\Diactoros\ServerRequest  $request
      * @return array
      */
     protected function dispatchRequestToAuthorizationServer(ServerRequest $request)
@@ -123,8 +123,16 @@ class PersonalAccessTokenFactory
      */
     protected function findAccessToken(array $response)
     {
+        $token = $this->jwt->parse($response['access_token']);
+        if (method_exists($token, 'getClaim')) {
+            $tokenId = $token->getClaim('jti');
+        } else if (method_exists($token, 'claims')) {
+            $tokenId = $token->claims()->get('jti');
+        } else {
+            throw new \RuntimeException('This package is not compatible to the used Laravel Passport version.');
+        }
         return $this->tokens->find(
-            $this->jwt->parse($response['access_token'])->getClaim('jti')
+            $tokenId
         );
     }
 }
