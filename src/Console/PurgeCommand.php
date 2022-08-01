@@ -47,9 +47,9 @@ class PurgeCommand extends Command
 
             $this->info('Purged revoked items.');
         } elseif ($this->option('expired')) {
-            Passport::token()->where('expires_at', '<', $expired)->delete();
-            Passport::authCode()->where('expires_at', '<', $expired)->delete();
-            Passport::refreshToken()->where('expires_at', '<', $expired)->delete();
+            Token::where('expires_at', '<', $expired)->delete();
+            AuthCode::where('expires_at', '<', $expired)->delete();
+            RefreshToken::where('expires_at', '<', $expired)->delete();
 
             $this->info('Purged items expired for more than seven days.');
         }
