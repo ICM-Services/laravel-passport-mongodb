@@ -7,7 +7,7 @@ use MoeenBasra\LaravelPassportMongoDB\Passport;
 use MoeenBasra\LaravelPassportMongoDB\Bridge\User;
 use MoeenBasra\LaravelPassportMongoDB\TokenRepository;
 use MoeenBasra\LaravelPassportMongoDB\ClientRepository;
-use Jenssegers\Mongodb\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 use Psr\Http\Message\ServerRequestInterface;
 use Laminas\Diactoros\Response as Psr7Response;
 use League\OAuth2\Server\AuthorizationServer;
@@ -103,7 +103,7 @@ class AuthorizationController
      * Approve the authorization request.
      *
      * @param  \League\OAuth2\Server\RequestTypes\AuthorizationRequest  $authRequest
-     * @param  \Jenssegers\Mongodb\Eloquent\Model  $user
+     * @param  \MongoDB\Laravel\Eloquent\Model  $user
      * @return \Illuminate\Http\Response
      */
     protected function approveRequest($authRequest, $user)
