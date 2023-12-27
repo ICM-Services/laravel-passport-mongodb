@@ -10,7 +10,7 @@
  
  Laravel Passport is an OAuth2 server and API authentication package that is simple and enjoyable to use.
  
- Use jenssegers/mongodb save oauth infomation.
+ Use mongodb/laravel-mongodb save oauth infomation.
  
  ## Laravel Passport Official Documentation
  
