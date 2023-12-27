@@ -2,7 +2,7 @@
 
 namespace MoeenBasra\LaravelPassportMongoDB;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 
 class Token extends Model
 {
@@ -56,7 +56,7 @@ class Token extends Model
     /**
      * Get the client that the token belongs to.
      *
-     * @return \Jenssegers\Mongodb\Eloquent\Relations\BelongsTo
+     * @return \MongoDB\Laravel\Eloquent\Relations\BelongsTo
      */
     public function client()
     {
@@ -66,7 +66,7 @@ class Token extends Model
     /**
      * Get the user that the token belongs to.
      *
-     * @return \Jenssegers\Mongodb\Eloquent\Relations\BelongsTo
+     * @return \MongoDB\Laravel\Eloquent\Relations\BelongsTo
      */
     public function user()
     {

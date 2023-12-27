@@ -16,7 +16,7 @@ trait HasApiTokens
     /**
      * Get all of the user's registered OAuth clients.
      *
-     * @return \Jenssegers\Mongodb\Relations\\HasMany
+     * @return \MongoDB\Laravel\Relations\\HasMany
      */
     public function clients()
     {
@@ -26,7 +26,7 @@ trait HasApiTokens
     /**
      * Get all of the access tokens for the user.
      *
-     * @return \Jenssegers\Mongodb\Collection
+     * @return \MongoDB\Laravel\Collection
      */
     public function tokens()
     {

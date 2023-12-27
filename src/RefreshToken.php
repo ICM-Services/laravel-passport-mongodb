@@ -2,7 +2,7 @@
 
 namespace MoeenBasra\LaravelPassportMongoDB;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 
 class RefreshToken extends Model
 {

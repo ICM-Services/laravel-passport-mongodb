@@ -3,7 +3,7 @@
 namespace MoeenBasra\LaravelPassportMongoDB;
 
 use Carbon\Carbon;
-use Jenssegers\Mongodb\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 
 class TokenRepository
 {
@@ -45,7 +45,7 @@ class TokenRepository
      * Get the token instances for the given user ID.
      *
      * @param  mixed  $userId
-     * @return \Jenssegers\Mongodb\Eloquent\Collection
+     * @return \MongoDB\Laravel\Eloquent\Collection
      */
     public function forUser($userId)
     {
@@ -55,7 +55,7 @@ class TokenRepository
     /**
      * Get a valid token instance for the given user and client.
      *
-     * @param  \Jenssegers\Mongodb\Eloquent\Model  $user
+     * @param  \MongoDB\Laravel\Eloquent\Model  $user
      * @param  \MoeenBasra\LaravelPassportMongoDB\Client  $client
      * @return \MoeenBasra\LaravelPassportMongoDB\Token|null
      */
@@ -109,7 +109,7 @@ class TokenRepository
     /**
      * Find a valid token for the given user and client.
      *
-     * @param  \Jenssegers\Mongodb\Eloquent\Model  $user
+     * @param  \MongoDB\Laravel\Eloquent\Model  $user
      * @param  \MoeenBasra\LaravelPassportMongoDB\Client  $client
      * @return \MoeenBasra\LaravelPassportMongoDB\Token|null
      */

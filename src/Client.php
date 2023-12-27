@@ -2,7 +2,7 @@
 
 namespace MoeenBasra\LaravelPassportMongoDB;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 
 class Client extends Model
 {
@@ -43,7 +43,7 @@ class Client extends Model
     /**
      * Get all of the authentication codes for the client.
      *
-     * @return \Jenssegers\Mongodb\Relations\HasMany
+     * @return \MongoDB\Laravel\Relations\HasMany
      */
     public function authCodes()
     {
@@ -53,7 +53,7 @@ class Client extends Model
     /**
      * Get all of the tokens that belong to the client.
      *
-     * @return \Jenssegers\Mongodb\Relations\HasMany
+     * @return \MongoDB\Laravel\Relations\HasMany
      */
     public function tokens()
     {

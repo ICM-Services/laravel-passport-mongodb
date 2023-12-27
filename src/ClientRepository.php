@@ -46,7 +46,7 @@ class ClientRepository
      * Get the client instances for the given user ID.
      *
      * @param  mixed  $userId
-     * @return \Jenssegers\Mongodb\Collection
+     * @return \MongoDB\Laravel\Collection
      */
     public function forUser($userId)
     {
@@ -58,7 +58,7 @@ class ClientRepository
      * Get the active client instances for the given user ID.
      *
      * @param  mixed  $userId
-     * @return \Jenssegers\Mongodb\Collection
+     * @return \MongoDB\Laravel\Collection
      */
     public function activeForUser($userId)
     {
