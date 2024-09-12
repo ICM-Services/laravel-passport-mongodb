@@ -83,4 +83,8 @@ class PassportUserProvider implements UserProvider
     {
         return $this->providerName;
     }
+
+    public function rehashPasswordIfRequired(Authenticatable $user, #[\SensitiveParameter] array $credentials, bool $force = false) {
+        return $this->provider->rehashPasswordIfRequired($user, $credentials, $force);
+    }
 }
