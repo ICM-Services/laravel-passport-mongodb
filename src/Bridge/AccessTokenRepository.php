@@ -2,13 +2,12 @@
 
 namespace MoeenBasra\LaravelPassportMongoDB\Bridge;
 
-use DateTime;
-use MoeenBasra\LaravelPassportMongoDB\TokenRepository;
 use Illuminate\Contracts\Events\Dispatcher;
-use MoeenBasra\LaravelPassportMongoDB\Events\AccessTokenCreated;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use MoeenBasra\LaravelPassportMongoDB\Events\AccessTokenCreated;
+use MoeenBasra\LaravelPassportMongoDB\TokenRepository;
 
 class AccessTokenRepository implements AccessTokenRepositoryInterface
 {
@@ -17,22 +16,19 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     /**
      * The token repository instance.
      *
-     * @var \MoeenBasra\LaravelPassportMongoDB\TokenRepository
+     * @var TokenRepository
      */
     protected $tokenRepository;
 
     /**
      * The event dispatcher instance.
      *
-     * @var \Illuminate\Contracts\Events\Dispatcher
+     * @var Dispatcher
      */
     private $events;
 
     /**
      * Create a new repository instance.
-     *
-     * @param  \MoeenBasra\LaravelPassportMongoDB\TokenRepository  $tokenRepository
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      */
     public function __construct(TokenRepository $tokenRepository, Dispatcher $events)
     {
@@ -40,18 +36,15 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         $this->tokenRepository = $tokenRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
-    {
-        return new AccessToken($userIdentifier, $scopes, $clientEntity);
+    public function getNewToken(
+        ClientEntityInterface $clientEntity,
+        array $scopes,
+        ?string $userIdentifier = null
+    ): AccessTokenEntityInterface {
+        return new AccessToken($userIdentifier, $clientEntity, $scopes);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
+    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity): void
     {
         $this->tokenRepository->create([
             '_id' => $accessTokenEntity->getIdentifier(),
@@ -59,8 +52,8 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
             'client_id' => $accessTokenEntity->getClient()->getIdentifier(),
             'scopes' => $this->scopesToArray($accessTokenEntity->getScopes()),
             'revoked' => false,
-            'created_at' => new DateTime,
-            'updated_at' => new DateTime,
+            'created_at' => new \DateTime(),
+            'updated_at' => new \DateTime(),
             'expires_at' => $accessTokenEntity->getExpiryDateTime(),
         ]);
 
@@ -71,18 +64,12 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function revokeAccessToken($tokenId)
+    public function revokeAccessToken(string $tokenId): void
     {
         $this->tokenRepository->revokeAccessToken($tokenId);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isAccessTokenRevoked($tokenId)
+    public function isAccessTokenRevoked(string $tokenId): bool
     {
         return $this->tokenRepository->isAccessTokenRevoked($tokenId);
     }

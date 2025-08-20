@@ -2,21 +2,17 @@
 
 namespace MoeenBasra\LaravelPassportMongoDB\Bridge;
 
-use DateInterval;
-use Psr\Http\Message\ServerRequestInterface;
 use League\OAuth2\Server\Grant\AbstractGrant;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class PersonalAccessGrant extends AbstractGrant
 {
-    /**
-     * {@inheritdoc}
-     */
     public function respondToAccessTokenRequest(
         ServerRequestInterface $request,
         ResponseTypeInterface $responseType,
-        DateInterval $accessTokenTTL
-    ) {
+        \DateInterval $accessTokenTTL
+    ): ResponseTypeInterface {
         // Validate request
         $client = $this->validateClient($request);
         $scopes = $this->validateScopes($this->getRequestParameter('scope', $request));
@@ -36,10 +32,7 @@ class PersonalAccessGrant extends AbstractGrant
         return $responseType;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return 'personal_access';
     }

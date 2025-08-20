@@ -2,32 +2,32 @@
 
 namespace MoeenBasra\LaravelPassportMongoDB\Bridge;
 
-use MoeenBasra\LaravelPassportMongoDB\Passport;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
+use MoeenBasra\LaravelPassportMongoDB\Passport;
 
 class ScopeRepository implements ScopeRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getScopeEntityByIdentifier($identifier)
+    public function getScopeEntityByIdentifier(string $identifier): ?ScopeEntityInterface
     {
         if (Passport::hasScope($identifier)) {
             return new Scope($identifier);
         }
+
+        return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function finalizeScopes(
-        array $scopes, $grantType,
-        ClientEntityInterface $clientEntity, $userIdentifier = null)
-    {
-        if (! in_array($grantType, ['password', 'personal_access'])) {
+        array $scopes,
+        string $grantType,
+        ClientEntityInterface $clientEntity,
+        ?string $userIdentifier = null,
+        ?string $authCodeId = null
+    ): array {
+        if (!in_array($grantType, ['password', 'personal_access'])) {
             $scopes = collect($scopes)->reject(function ($scope) {
-                return trim($scope->getIdentifier()) === '*';
+                return '*' === trim($scope->getIdentifier());
             })->values()->all();
         }
 

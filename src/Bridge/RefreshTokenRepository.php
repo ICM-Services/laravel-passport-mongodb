@@ -2,64 +2,55 @@
 
 namespace MoeenBasra\LaravelPassportMongoDB\Bridge;
 
-use Illuminate\Database\Connection;
 use Illuminate\Contracts\Events\Dispatcher;
-use MoeenBasra\LaravelPassportMongoDB\Events\RefreshTokenCreated;
+use Illuminate\Database\Connection;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
+use MoeenBasra\LaravelPassportMongoDB\Events\RefreshTokenCreated;
 
 class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 {
     /**
      * The access token repository instance.
      *
-     * @var \MoeenBasra\LaravelPassportMongoDB\Bridge\AccessTokenRepository
+     * @var AccessTokenRepository
      */
     protected $tokens;
 
     /**
      * The database connection.
      *
-     * @var \Illuminate\Database\Connection
+     * @var Connection
      */
     protected $database;
 
     /**
      * The event dispatcher instance.
      *
-     * @var \Illuminate\Contracts\Events\Dispatcher
+     * @var Dispatcher
      */
     protected $events;
 
     /**
      * Create a new repository instance.
      *
-     * @param  \MoeenBasra\LaravelPassportMongoDB\Bridge\AccessTokenRepository  $tokens
-     * @param  \Illuminate\Database\Connection  $database
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
      */
     public function __construct(AccessTokenRepository $tokens,
-                                Connection $database,
-                                Dispatcher $events)
+        Connection $database,
+        Dispatcher $events)
     {
         $this->events = $events;
         $this->tokens = $tokens;
         $this->database = $database;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNewRefreshToken()
+    public function getNewRefreshToken(): RefreshTokenEntityInterface|null
     {
-        return new RefreshToken;
+        return new RefreshToken();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
+    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity): void
     {
         $this->database->table('oauth_refresh_tokens')->insert([
             '_id' => $id = $refreshTokenEntity->getIdentifier(),
@@ -71,24 +62,18 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
         $this->events->fire(new RefreshTokenCreated($id, $accessTokenId));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function revokeRefreshToken($tokenId)
+    public function revokeRefreshToken($tokenId): void
     {
         $this->database->table('oauth_refresh_tokens')
                     ->where('_id', $tokenId)->update(['revoked' => true]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isRefreshTokenRevoked($tokenId)
+    public function isRefreshTokenRevoked($tokenId): bool
     {
         $refreshToken = $this->database->table('oauth_refresh_tokens')
                     ->where('_id', $tokenId)->first();
 
-        if ($refreshToken === null || $refreshToken->revoked) {
+        if (null === $refreshToken || $refreshToken->revoked) {
             return true;
         }
 

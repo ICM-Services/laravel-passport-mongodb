@@ -2,8 +2,8 @@
 
 namespace MoeenBasra\LaravelPassportMongoDB\Bridge;
 
-use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use League\OAuth2\Server\Entities\Traits\EntityTrait;
 
 class Scope implements ScopeEntityInterface
 {
@@ -12,7 +12,8 @@ class Scope implements ScopeEntityInterface
     /**
      * Create a new scope instance.
      *
-     * @param  string  $name
+     * @param string $name
+     *
      * @return void
      */
     public function __construct($name)
@@ -22,10 +23,8 @@ class Scope implements ScopeEntityInterface
 
     /**
      * Get the data that should be serialized to JSON.
-     *
-     * @return mixed
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getIdentifier();
     }
